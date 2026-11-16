@@ -1,0 +1,31 @@
+
+
+
+Utilisateur{
+
+}
+
+Administrateur{
+
+}
+
+Employe{
+
+}
+
+
+Livre {
+
+}
+
+
+Emprunt{
+
+}
+
+O,N                    0,N
+Utilisateur (Emprunt)  Livre
+Emprunt( id_emprunt,#id_utilisateur,#id_livre,date_debut,date_fin)
+Utilisateur 
+
+titre, auteur, ISBN, année de publication, nombre d'exemplaires totaux et disponibles).

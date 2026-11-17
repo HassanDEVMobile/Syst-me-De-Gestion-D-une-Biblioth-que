@@ -6,11 +6,12 @@ class UtilisateurRepository:
     
     #Création de la table utilisateur
     def utilisateur_table(self):
-        con = sqlite3.connect('Bibliotheque.db')
+     with sqlite3.connect('Bibliotheques.db') as con :
         cursor = con.cursor()
+        cursor.execute("DROP TABLE IF EXISTS Utilisateur")
         cursor.execute("""
             CREATE TABLE Utilisateur(
-            id PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             numeroAbonner TEXT UNIQUE NOT NULL , 
             nom TEXT NOT NULL , 
             prenom TEXT NOT NULL,
@@ -19,36 +20,22 @@ class UtilisateurRepository:
             statut TEXT NULL                
             )
                 """)
-        con.close()
-        
+       
         
      #Insertion d'un utilisateur   
     def utilisateur_insert(self,utilisateur):  
-        self.utilisateur()
-        con = sqlite3.connect('Bibliotheque.db')
-        cursor = con.cursor()
-        cursor.execute(" INSERT INTO Utilisateur(?,?,?,?,?,?)",utilisateur)
-        con.commit()
-        con.close()
+        self.utilisateur_table()
+        with sqlite3.connect('Bibliotheques.db') as con :
+            cursor = con.cursor()
+            cursor.execute(" INSERT INTO Utilisateur(numeroAbonner,nom,prenom,dateNaiss,adress,statut) VALUES (?,?,?,?,?,?)",utilisateur)
+            con.commit()
+           
+    
+    
         
         
-    #Modification d'un utilisateur
-    def utilisateur_update(self,id):
-        self.utilisateur()
-        con = sqlite3.connect('Bibliotheque.db')
-        cursor = con.cursor()
-        cursor.execute("""
-                       UPDATE Utilisateur
-                       SET
-                       nom = ? 
-                       prenom = ? 
-                       dateNaiss = ? 
-                       
-                       """)
         
-
-"""
 utilisateurRepository = UtilisateurRepository()
-utilisateur = Utilisateur("BBT-001","Diabagate","Hassane ILias","2007-04-25","Grand-Bassam","actif")
-utilisateurRepository.utilisateur_insert(tuple(utilisateur__dict__.values()))
-"""
+utilisateur = Utilisateur("BT008","Diabagate","Hassane ILias","2007-04-25","Abidjan","inactif")
+print(utilisateur.to_tuple())
+utilisateurRepository.utilisateur_insert(utilisateur.to_tuple()) 

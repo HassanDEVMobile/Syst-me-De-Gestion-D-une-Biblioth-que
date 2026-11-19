@@ -28,5 +28,3 @@ class Utilisateur :
         return self.numero_abonner,self.nom,self.prenom,self.date_naiss,self.adresse,self.statut
 
 
-utilisateur = Utilisateur("BT008","Diabagate","Hassane ILias","2007-04-25","Abidjan","inactif")
-print(utilisateur.to_tuple())

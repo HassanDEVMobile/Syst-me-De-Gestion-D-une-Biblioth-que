@@ -5,17 +5,9 @@ import sqlite3
 class EmployeRepository :
     
     #Création de table Employe 
-    def employe_table(self):
+    def __init__(self):
         with sqlite3.connect('Bibliotheques.db') as con :
-            requete = """
-            CREATE TABLE Employe (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                codeEmploye TEXT UNIQUE NOT NULL,
-                email TEXT UNIQUE NOT NULL,
-                motDePasse TEXT NOT NULL,
-                statut TEXT
-            )
-            """
+            requete = " CREATE TABLE IF NOT EXISTS Employe (id INTEGER PRIMARY KEY AUTOINCREMENT,codeEmploye TEXT UNIQUE NOT NULL,email TEXT UNIQUE NOT NULL,motDePasse TEXT NOT NULL)"
             cursor = con.cursor()
             cursor.execute(requete)
             
@@ -54,3 +46,22 @@ class EmployeRepository :
             cursor = con.cursor()
             resultat = cursor.execute(requete)
             return resultat.fetchall()
+        
+    
+    #Verifier l'email d'un employer 
+    def employe_verifier_email(self,email):
+        with sqlite3.connect('Bibliotheques.db') as con :
+            requete = "SELECT * FROM Employe WHERE email = ?"
+            cursor = con.cursor()
+            resultat = cursor.execute(requete,(email,))
+            return resultat.fetchone() is None  
+        
+        
+    #Verifier le mot de passe d'un employer 
+    def employer_verifier_mot_de_passe(self,email,mot_de_passe):
+         with sqlite3.connect('Bibliotheques.db') as con :
+            requete = "SELECT * FROM Employe WHERE email = ? AND motDePasse = ? "
+            cursor = con.cursor()
+            resultat = cursor.execute(requete,(email,mot_de_passe))
+            return resultat.fetchone() is None
+        

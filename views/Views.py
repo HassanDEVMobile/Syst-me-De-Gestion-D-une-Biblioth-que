@@ -1,7 +1,7 @@
 
 
 
-class view :
+class Views :
     
     #Menu principale pour les employers
     def menu_principale_employe(self):
@@ -37,10 +37,11 @@ class view :
     
     #Interface de connexion pour les administrateurs et les employers 
     def interface_connexion(self):
-        print("""=====CONNEXION=====
+        connexion = """=====CONNEXION=====
                  1-Se connecter 
                  0-Quitter 
-              """)
+              """.strip()
+        print(connexion)
         return int(input("Veuillez faire un choix : "))
             
         
@@ -55,3 +56,12 @@ class view :
     #On saisir le mot le mot de passe 
     def interface_saisie_mot_de_passe_connexion(self):
         return input("Veuillez saisir votre mot de passe : ")
+    
+    
+    #On affiche une erreur si l'email est faux
+    def message_erreur_email(self):
+        print("Email incorrect !")
+    
+    #On affiche une erreur si le mot de passe est faux
+    def message_erreur_mdp(self):
+        print("Mot de passe incorrect !")

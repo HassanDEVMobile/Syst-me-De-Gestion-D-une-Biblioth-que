@@ -29,3 +29,26 @@ Emprunt( id_emprunt,#id_utilisateur,#id_livre,date_debut,date_fin)
 Utilisateur 
 
 titre, auteur, ISBN, année de publication, nombre d'exemplaires totaux et disponibles).
+
+
+#Interface de connexion jusqu'à l'Interface principale 
+
+1-Interface de connexion
+emails 
+on repète ca jusqu a ce que l'emails soit correct
+si (emails.admin) est correct alors :
+  on repète ça jusqu a ce que le mdp soit correct
+    (motDePasse.admin) 
+        si (motDePasse.admin) est correct alors : 
+          InterfaceprincipaleAdmin
+        sinon (motDePasse.admin) incorrect alors :
+          Message d'erreur 
+sinon si (emails.Employe) correct  :
+    on repète ça jusqu a ce que le mdp soit correct
+    (motDePasse.Employe) 
+        si (motDePasse.Employe) est correct alors : 
+          InterfaceprincipaleEmploye
+        sinon (motDePasse.Employe) incorrect alors :
+          Message d'erreur 
+sinon :
+  Message d'erreur

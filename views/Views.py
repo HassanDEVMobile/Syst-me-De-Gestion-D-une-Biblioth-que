@@ -24,7 +24,7 @@ class view :
         menu = """
         === SYSTEME DE GESTION DE BIBLIOTHEQUE ===
         1. Gestionnaire des livres 
-        2. Gestionnaire d'un abonné
+        2. Gestionnaire des abonné
         3. Effectuer un emprunt
         4. Enregistrer un retour de livre
         5. Consulter la liste des emprunts en cours
@@ -37,12 +37,21 @@ class view :
     
     #Interface de connexion pour les administrateurs et les employers 
     def interface_connexion(self):
-        print("=====CONNEXION=====")
-        email = input("Entrer votre email : ")
-        if self.verifier_email(email) == True :
-            mot_de_passe = input("Entrer votre mot de passe : ")
-            if self.verifier_mot_de_passe(mot_de_passe):
-                self.menu_principale_admin()
+        print("""=====CONNEXION=====
+                 1-Se connecter 
+                 0-Quitter 
+              """)
+        return int(input("Veuillez faire un choix : "))
+            
+        
+    """
+    ***On saisie l'email puis ont va verifier si l'email existe dans le controller 
+    ***Si l'email existe alors ont va afficher l'interface de saisir de mot de passe
+    """
+    def interface_saisie_email_connexion(self):
+        return input("Veuillez saisir votre email : ")
+        
     
-    def verifier_email(self,email):
-        pass
+    #On saisir le mot le mot de passe 
+    def interface_saisie_mot_de_passe_connexion(self):
+        return input("Veuillez saisir votre mot de passe : ")

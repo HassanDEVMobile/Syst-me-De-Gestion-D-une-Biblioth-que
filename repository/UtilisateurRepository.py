@@ -4,8 +4,8 @@ import sqlite3
 
 class UtilisateurRepository:
     
-    #Création de la table utilisateur
-    def utilisateur_table(self):
+    #Création de la table utilisateur lors de la création de l'objet
+    def __init__(self):
      with sqlite3.connect('Bibliotheques.db') as con :
         cursor = con.cursor()
         cursor.execute("""
@@ -16,7 +16,7 @@ class UtilisateurRepository:
             prenom TEXT NOT NULL,
             dateNaiss DATE NULL ,
             adress NOT NULL,
-            statut TEXT NULL                
+            statut TEXT NULL    
             )
                 """)
        
@@ -41,9 +41,8 @@ class UtilisateurRepository:
     
     #Recherche d'un utilisateur
     def utilisateur_find_one(self,id):
-        
         with sqlite3.connect('Bibliotheques.db') as con :
-            requete = "SELECT * FROM Utilisateur WHERE id = ?"
+            requete = "SELECT numeroAbonner , nom , prenom , dateNaiss adress, statut FROM Utilisateur WHERE id = ?"
             cursor = con.cursor()
             resultat = cursor.execute(requete,(id,))
             return resultat.fetchone()

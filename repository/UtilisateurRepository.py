@@ -8,8 +8,9 @@ class UtilisateurRepository:
     def __init__(self):
      with sqlite3.connect('Bibliotheques.db') as con :
         cursor = con.cursor()
+        #cursor.execute("DROP TABLE IF EXISTS Utilisateur")
         cursor.execute("""
-            CREATE TABLE Utilisateur(
+            CREATE TABLE IF NOT EXISTS Utilisateur(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             numeroAbonner TEXT UNIQUE NOT NULL , 
             nom TEXT NOT NULL , 
@@ -32,7 +33,7 @@ class UtilisateurRepository:
     
     #Modification d'un utilisateur
     def utilisateur_update(self,utilisateur):
-        requete = "UPDATE Utilisateur SET nom = ? , prenom = ?, dateNaiss = ? , adress = ? , statut = ? WHERE id = ? "
+        requete = "UPDATE Utilisateur SET nom = ? , prenom = ?, dateNaiss = ? , adress = ? , statut = ? WHERE numeroAbonner = ? "
         with sqlite3.connect('Bibliotheques.db') as con :
             cursor = con.cursor()
             cursor.execute(requete,utilisateur)
@@ -42,7 +43,7 @@ class UtilisateurRepository:
     #Recherche d'un utilisateur
     def utilisateur_find_one(self,id):
         with sqlite3.connect('Bibliotheques.db') as con :
-            requete = "SELECT numeroAbonner , nom , prenom , dateNaiss adress, statut FROM Utilisateur WHERE id = ?"
+            requete = "SELECT numeroAbonner , nom , prenom , dateNaiss, adress, statut FROM Utilisateur WHERE id = ?"
             cursor = con.cursor()
             resultat = cursor.execute(requete,(id,))
             return resultat.fetchone()
@@ -59,8 +60,41 @@ class UtilisateurRepository:
     #Recherhcher tous les utilisateurs 
     def utilisateur_find_all(self):
         with sqlite3.connect('Bibliotheques.db') as con : 
-            requete = "SELECT * FROM Utilisateur ORDER BY nom"
+            requete = "SELECT numeroAbonner , nom , prenom , dateNaiss, adress, statut FROM Utilisateur ORDER BY nom"
             cursor = con.cursor()
             resultat =  cursor.execute(requete)
         return resultat.fetchall()
     
+    
+    #Recherche de tous les utilisateurs avec champs limité pour rechercher un utilisateur facilement
+    def utilisateur_find_all_rech_id(self):
+        with sqlite3.connect('Bibliotheques.db') as con : 
+            requete = "SELECT id , numeroAbonner , nom , prenom FROM Utilisateur ORDER BY nom"
+            cursor = con.cursor()
+            resultat =  cursor.execute(requete)
+        return resultat.fetchall()
+    
+    
+    #Recherche d'un utilisateur pour la suppression 
+    def utilisateur_find_one_supp(self):
+        with sqlite3.connect('Bibliotheques.db') as con :
+            requete = "SELECT * FROM Utilisateur WHERE id = ?"
+            cursor = con.cursor()
+            resultat = cursor.execute(requete,(id,))
+            return resultat.fetchone() is None 
+        
+    #Recherche d'un abonné à partir de son code pour une modification   
+    def utilisateur_find_one_modif(self,numero_abonner):
+        with sqlite3.connect('Bibliotheques.db') as con : 
+            requete = "SELECT * FROM Utilisateur WHERE numeroAbonner = ?"
+            cursor = con.cursor()
+            resultat =  cursor.execute(requete,(numero_abonner,))
+        return resultat.fetchone() is None
+    
+    #
+    def utilisateur_find_one_id_consult(self,id):
+        with sqlite3.connect('Bibliotheques.db') as con : 
+            requete = "SELECT * FROM Utilisateur WHERE id = ?"
+            cursor = con.cursor()
+            resultat =  cursor.execute(requete,(id,))
+        return resultat.fetchone() is None

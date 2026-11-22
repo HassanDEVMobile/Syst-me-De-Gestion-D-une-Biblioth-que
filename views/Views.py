@@ -93,10 +93,10 @@ class Views :
         numero_abonner = input("Entrer le numéro de l'abonner(Format BBL-xxx) :")
         nom = input("Entrer le nom de l'abonner :")
         prenom = input("Entrer le prenom de l'abonner :")   
-        date = self.saisie_date()
+        date_naiss = self.saisie_date()
         adresse = input("Entrer l'adresse de labonner : ")
         statut = input("Entrer le statut de l'abonner")
-        return numero_abonner,nom,prenom,date,adresse,statut
+        return numero_abonner,nom,prenom,date_naiss,adresse,statut
     
     #Modification d'un abonné 
     def interface_modification_abonner(self):
@@ -104,10 +104,14 @@ class Views :
         print(affiche.strip())
         nom = input("Entrer le nom de l'abonner :")
         prenom = input("Entrer le prenom de l'abonner :")   
-        date = self.saisie_date()
+        date_naiss = self.saisie_date()
         adresse = input("Entrer l'adresse de labonner : ")
         statut = input("Entrer le statut de l'abonner")
-        return nom,prenom,date,adresse,statut
+        return nom,prenom,date_naiss,adresse,statut
+    
+    #On saisie le numéro d'abonnement pour l'abonner dont ont veut faire la modification
+    def interface_saisie_num_abonner_modif(self):
+        return input("Entrer le numéro d'abonnement de l'abonner à modifier : ")
     
     #Consultation d'un abonné
     def interface_consultation_abonner(self,abonner):
@@ -120,9 +124,18 @@ class Views :
        return int(input("Veuillez saisir l'id de l'abonné : "))
    
     #Interface affichant la liste de tous les abonnés avec id pour la recherche d'un aboné 
-    def interface_liste_abonner(self,liste_abonner):
+    def interface_liste_abonner_rech_id(self,liste_abonner):
         for abonner in liste_abonner:
             print(f"id : {abonner[0]} | Numéro abonnement : {abonner[1]} | Nom : {abonner[2]} | prenom : {abonner[3]}")
+          
+    #Interface de suppression d'un abonner 
+    def interface_suppression_abonner(self):
+        return int(input("Entrer l'id de l'abonné à supprimer : "))
+    
+    #Interface qui liste tous les abonnés
+    def interface_liste_abonner(self,list_abonner):
+        for abonner in list_abonner:
+            print(f"Numéro abonnement : {abonner[0]} | Nom : {abonner[1]} | Prenom : {abonner[2]} | Date de naissance : {abonner[3]} | Adresse : {abonner[4]} | Statut : {abonner[5]}")
           
     
     #Methode de saisie de date et de verfication
@@ -131,7 +144,7 @@ class Views :
         while True:
             date = input("Entrer la date de naissance de l'abonner(format yy-mm-dd) : ")
             try:
-                date_valide = datetime.strptime(format_accepter,date)
+                date_valide = datetime.strptime(date,format_accepter)
                 return date_valide
             except ValueError :
                 print("Format de date incorrect ou date inexistante dans le calendrier ")

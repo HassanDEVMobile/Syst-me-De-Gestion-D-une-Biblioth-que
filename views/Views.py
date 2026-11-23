@@ -152,7 +152,7 @@ class Views :
     
     
     #Menu de Gestion des Livres
-    def interface_gestion_abonner(self):
+    def interface_gestion_livre(self):
         menu_gestion_livre="""
         ========================================
                GESTIONNAIRES DES ABONNEES   

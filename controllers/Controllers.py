@@ -23,31 +23,38 @@ class Controllers :
         return self.view,self.adminRepository,self.employeRepository,self.utilisateurRepository,self.livreRepository
     
     
-    #Logique de connexion d'un Employe ou Admin
+    #Logique de connexion d'un Employe ou d'un Admin
     def authentification(self):
         view,adminRepository,employeRepository = self.instance()[0],self.instance()[1],self.instance()[2]
         choix = view.interface_connexion()
         if choix == 1 :
-            email = self.view.interface_saisie_email_connexion()
-            if self.adminRepository.admin_email_verification(email) == False :
-                mot_de_passe =  self.view.interface_saisie_mot_de_passe_connexion()
-                if self.adminRepository.admin_mot_de_passe_verification(mot_de_passe,email) == False:
-                  choix_options = self.view.menu_principale_admin()
-                  return choix_options
+            email = "root@gmail.com"
+            #Tanque l'email de l'admin ou de l'employer est faux ont lui redemande de resaisir 
+            while self.adminRepository.admin_email_verification(email) == True or self.employeRepository.employe_email_verification == True :
+                email = self.view.interface_saisie_email_connexion()
+                if self.adminRepository.admin_email_verification(email) == False :
+                   mot_de_passe = "root"
+                   #Tanque le mot de passe de l'admin est faux ont lui redemande de resaisir 
+                   while self.adminRepository.admin_mot_de_passe_verification(mot_de_passe,email) == True : 
+                        mot_de_passe = self.view.interface_saisie_mot_de_passe_connexion()
+                        if self.adminRepository.admin_mot_de_passe_verification(mot_de_passe,email) == False:
+                            return 1
+                        else :
+                          #On affiche un message d'erreur pour le mot de passe admin
+                          self.view.message_erreur_mdp()
+                elif self.employeRepository.employe_verifier_email(email) == False:
+                     mot_de_passe = "root"
+                     #Tanque le mot de passe de l'employer est faux ont lui redemande de resaisi
+                     while self.employeRepository.employer_verifier_mot_de_passe(mot_de_passe) == True :
+                           mot_de_passe =  view.interface_saisie_mot_de_passe_connexion()
+                           if self.employeRepository.employer_verifier_mot_de_passe(email,mot_de_passe) == False :
+                                return 0
+                           else :
+                               #On affiche un message d'erreur pour le mot de passe employe
+                               self.view.message_erreur_mdp()
                 else :
-                    #On affiche un message d'erreur pour le mot de passe admin
-                    self.view.message_erreur_mdp()
-            elif self.employeRepository.employe_verifier_email(email) == False:
-                mot_de_passe =  view.interface_saisie_mot_de_passe_connexion()
-                if self.employeRepository.employer_verifier_mot_de_passe(email,mot_de_passe) == False :
-                    choix_options = self.view.menu_principale_employe()
-                    return choix_options
-                else :
-                    #On affiche un message d'erreur pour le mot de passe employe
-                     self.view.message_erreur_mdp()
-            else :
-                #On affiche un message d'erreur pour l'email 
-                self.view.message_erreur_email()
+                    #On affiche un message d'erreur pour l'email 
+                    self.view.message_erreur_email() 
         elif choix == 0 :
             pass
         
@@ -108,26 +115,56 @@ class Controllers :
         
     #Methode de démarrage de l'application
     def run(self):
-      choix = self.authentification()
+      #choix = self.authentification()
       self.view = self.instance()[0]
-      while choix != 0 :
-            choix = self.authentification()
-            self.view = self.instance()[0]
-            if choix == 1 :
-                pass
-            elif choix == 2 :
-                choix_gestion_abonner = self.view.interface_gestion_abonner()
-                if choix_gestion_abonner == 1 :
-                    self.abonner_enregistrement()
-                elif choix_gestion_abonner == 2 :
-                    self.abonner_modification()
-                elif choix_gestion_abonner == 3 :
-                    self.abonner_rechercher_par_id()
-                elif  choix_gestion_abonner == 4 :
-                    self.abonner_supp_par_id()
-                elif choix_gestion_abonner == 5 :
-                    self.abonner_afficher_tous()
-                elif choix_gestion_abonner == 0 : 
+      reponse = self.authentification()
+      if reponse == 1:
+           choix = 3
+           while choix != 0:
+                choix = self.view.menu_principale_admin()
+                if choix == 1 :
                    pass
-            elif choix == 0 :
-               pass
+                elif choix == 2 :
+                   choix_gestion_abonner = 3
+                   while choix_gestion_abonner != 0 : 
+                        choix_gestion_abonner = self.view.interface_gestion_abonner()
+                        if choix_gestion_abonner == 1 :
+                          self.abonner_enregistrement()
+                        elif choix_gestion_abonner == 2 :
+                           self.abonner_modification()
+                        elif choix_gestion_abonner == 3 :
+                           self.abonner_rechercher_par_id()
+                        elif  choix_gestion_abonner == 4 :
+                           self.abonner_supp_par_id()
+                        elif choix_gestion_abonner == 5 :
+                           self.abonner_afficher_tous()
+                        elif choix_gestion_abonner == 6 :
+                            pass 
+                        elif choix_gestion_abonner == 0 : 
+                            break
+                elif choix == 0 :
+                    pass
+      elif reponse == 0 :
+            choix = 3
+            while choix != 0:
+                choix = self.view.menu_principale_employe()
+                if choix == 1 :
+                   pass
+                elif choix == 2 :
+                   choix_gestion_abonner = 3
+                   while choix_gestion_abonner != 0 : 
+                        choix_gestion_abonner = self.view.interface_gestion_abonner()
+                        if choix_gestion_abonner == 1 :
+                          self.abonner_enregistrement()
+                        elif choix_gestion_abonner == 2 :
+                           self.abonner_modification()
+                        elif choix_gestion_abonner == 3 :
+                           self.abonner_rechercher_par_id()
+                        elif  choix_gestion_abonner == 4 :
+                           self.abonner_supp_par_id()
+                        elif choix_gestion_abonner == 5 :
+                           self.abonner_afficher_tous()
+                        elif choix_gestion_abonner == 0 : 
+                            break
+                elif choix == 0 :
+                    pass
